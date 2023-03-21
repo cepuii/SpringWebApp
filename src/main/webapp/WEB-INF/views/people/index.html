@@ -7,7 +7,9 @@
 <body>
 <hr>
 <div th:each="person : ${people}">
-    <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName()}"> LINK </a>
+    <a th:href="@{/people/{id}(id=${person.getId()})}"
+       th:text="${person.getId() + '.   ' + person.getName() + '   ' + person.getSurname()  + ',   ' + person.getAge()  + ',   ' + person.getEmail()}">
+        LINK </a>
 </div>
 <br>
 <hr>
