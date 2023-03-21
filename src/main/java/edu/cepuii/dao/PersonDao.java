@@ -1,32 +1,44 @@
 package edu.cepuii.dao;
 
 import edu.cepuii.models.Person;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class PersonDao {
 
-    private static int peopleId = 100;
-    private final List<Person> people;
+    private final JdbcTemplate jdbcTemplate;
 
-    {
-        people = new ArrayList<>();
-        people.add(new Person(peopleId++, "cepuii"));
-        people.add(new Person(peopleId++, "name2"));
-        people.add(new Person(peopleId++, "name3"));
-        people.add(new Person(peopleId++, "name4"));
+    @Autowired
+    public PersonDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Person> getAll(){
-        return people;
+    public List<Person> getAll() {
+        return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
     }
 
-    public Person getById(int id){
-        return people.stream().filter(person -> person.getId()==id).findFirst().orElse(null);
+    public Person getById(int id) {
+        return jdbcTemplate.query("SELECT * FROM person WHERE id=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{id})
+                .stream().findAny().orElseThrow(() -> new RuntimeException("Object not found"));
     }
 
+    public void save(Person person) {
+        jdbcTemplate.update("INSERT INTO person VALUES (1,?,?,?,?)",
+                person.getName(), person.getSurname(), person.getAge(), person.getEmail());
+    }
+
+    public void update(int id, Person person) {
+        jdbcTemplate.update("UPDATE person SET name=?, surname=?, age=?, email=? WHERE id=?",
+                person.getName(), person.getSurname(), person.getAge(), person.getEmail(), id);
+    }
+
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM person WHERE id=?", id);
+    }
 }
 
