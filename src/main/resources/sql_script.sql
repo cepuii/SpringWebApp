@@ -8,8 +8,8 @@ CREATE TABLE Person(
                        email varchar UNIQUE
 );
 
-INSERT INTO person (name, surname, age, email) VALUES
-                                                   ('Tom','Smith', 18, 'email@eamil.com'),
-                                                   ('Sem','Ymith', 18, 'email1@eamil.com'),
-                                                   ('Nil','Mith', 18, 'email3@eamil.com'),
-                                                   ('Nick','Smith', 28, 'email2@eamil.com');
+INSERT INTO person (name, surname, age, email, address) VALUES
+                                                   ('Tom','Smith', 18, 'email@eamil.com', 'Ukraine, Odessa, 123456'),
+                                                   ('Sem','Ymith', 18, 'email1@eamil.com', 'Ukraine, Kyiv, 654321'),
+                                                   ('Nil','Mith', 18, 'email3@eamil.com', 'Italy, Rome, 321456'),
+                                                   ('Nick','Smith', 28, 'email2@eamil.com', 'America, Texas, 987654');

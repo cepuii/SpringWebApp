@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PersonDao {
@@ -24,21 +25,28 @@ public class PersonDao {
 
     public Person getById(int id) {
         return jdbcTemplate.query("SELECT * FROM person WHERE id=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{id})
-                .stream().findAny().orElseThrow(() -> new RuntimeException("Object not found"));
+                .stream().findAny().orElse(null);
+    }
+
+    public Optional<Person> getByEmail(String email) {
+        return jdbcTemplate.query("SELECT * FROM person WHERE email=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{email})
+                .stream().findAny();
     }
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO person (name, surname, age, email) VALUES (?,?,?,?)",
-                person.getName(), person.getSurname(), person.getAge(), person.getEmail());
+        jdbcTemplate.update("INSERT INTO person (name, surname, age, email, address) VALUES (?,?,?,?,?)",
+                person.getName(), person.getSurname(), person.getAge(), person.getEmail(), person.getAddress());
     }
 
     public void update(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET name=?, surname=?, age=?, email=? WHERE id=?",
-                person.getName(), person.getSurname(), person.getAge(), person.getEmail(), id);
+        jdbcTemplate.update("UPDATE person SET name=?, surname=?, age=?, email=?, address=? WHERE id=?",
+                person.getName(), person.getSurname(), person.getAge(), person.getEmail(), person.getAddress(), id);
     }
 
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM person WHERE id=?", id);
     }
+
+
 }
 
