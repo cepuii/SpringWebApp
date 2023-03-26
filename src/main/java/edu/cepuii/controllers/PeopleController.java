@@ -1,6 +1,8 @@
 package edu.cepuii.controllers;
 
+import edu.cepuii.dao.BookDao;
 import edu.cepuii.dao.PersonDao;
+import edu.cepuii.models.Book;
 import edu.cepuii.models.Person;
 import edu.cepuii.util.PersonValidator;
 import jakarta.validation.Valid;
@@ -10,16 +12,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
 
     private final PersonDao personDao;
+    private final BookDao bookDao;
     private final PersonValidator personValidator;
 
-    public PeopleController(PersonDao personDao, PersonValidator personValidator) {
+    public PeopleController(PersonDao personDao, BookDao bookDao, PersonValidator personValidator) {
         this.personDao = personDao;
+        this.bookDao = bookDao;
         this.personValidator = personValidator;
     }
 
@@ -32,18 +37,20 @@ public class PeopleController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        Person person = personDao.getById(id);
-        model.addAttribute("person", person);
+
+        Optional<Person> person = personDao.getById(id);
+
+        if (person.isEmpty()) {
+            return "redirect:/people";
+        }
+
+        List<Book> books = bookDao.getAllByPersonId(person.get().getPersonId());
+        model.addAttribute("books", books);
+
+        model.addAttribute("person", person.get());
         return "people/show";
     }
 
-    //
-//    @GetMapping("/new")
-//    public String newPerson(Model model) {
-//        model.addAttribute("person", new Person());
-//        return "people/create";
-//    }
-//    next the same code
     @GetMapping("/new")
     public String newPerson(@ModelAttribute Person person) {
         return "people/create";
@@ -59,12 +66,17 @@ public class PeopleController {
         }
 
         personDao.save(person);
+
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDao.getById(id));
+        Optional<Person> person = personDao.getById(id);
+        if (person.isEmpty()) {
+            return "redirect:/people";
+        }
+        model.addAttribute("person", person.get());
         return "people/edit";
     }
 

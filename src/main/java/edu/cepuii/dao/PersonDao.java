@@ -23,28 +23,28 @@ public class PersonDao {
         return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
     }
 
-    public Person getById(int id) {
-        return jdbcTemplate.query("SELECT * FROM person WHERE id=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{id})
-                .stream().findAny().orElse(null);
+    public Optional<Person> getById(int id) {
+        return jdbcTemplate.query("SELECT * FROM person WHERE person_id=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{id})
+                .stream().findAny();
     }
-
-    public Optional<Person> getByEmail(String email) {
-        return jdbcTemplate.query("SELECT * FROM person WHERE email=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{email})
+    public Optional<Person> getByFullName(String fullName) {
+        return jdbcTemplate.query("SELECT * FROM person WHERE full_name=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{fullName})
                 .stream().findAny();
     }
 
+
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO person (name, surname, age, email, address) VALUES (?,?,?,?,?)",
-                person.getName(), person.getSurname(), person.getAge(), person.getEmail(), person.getAddress());
+        jdbcTemplate.update("INSERT INTO person (full_name, year_of_birth) VALUES (?,?)",
+                person.getFullName(), person.getYearOfBirth());
     }
 
     public void update(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET name=?, surname=?, age=?, email=?, address=? WHERE id=?",
-                person.getName(), person.getSurname(), person.getAge(), person.getEmail(), person.getAddress(), id);
+        jdbcTemplate.update("UPDATE person SET full_name=?, year_of_birth=? WHERE person_id=?",
+                person.getFullName(), person.getYearOfBirth(), id);
     }
 
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM person WHERE id=?", id);
+        jdbcTemplate.update("DELETE FROM person WHERE person_id=?", id);
     }
 
 

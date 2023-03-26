@@ -1,18 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Чоловік</title>
 </head>
 <body>
-<p th:text="${person.getId()}">Value</p>
-<p th:text="${person.getName()}">Value</p>
-<p th:text="${person.getSurname()}">Value</p>
-<p th:text="${person.getAge()}">Value</p>
-<p th:text="${person.getEmail()}">Value</p>
-<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit person</a>
 
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+<p th:text="${person.getPersonId()}">Value</p>
+<p th:text="${person.getFullName()}">Value</p>
+<p th:text="${person.getYearOfBirth()}">Value</p>
+
+<br>
+<div th:if="${books?.isEmpty()}">
+    <p>User didn`t take any books yet</p>
+</div>
+
+<div th:if="${ books!=null && !#lists.isEmpty(books)}">
+    <h3>Books:</h3>
+    <div th:each="book : ${books}">
+        <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfPublic()}"></p>
+    </div>
+</div>
+<br>
+<hr>
+<a th:href="@{/people/{id}/edit(id=${person.getPersonId()})}">Edit person</a>
+
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPersonId()})}">
     <input type="submit" value="Delete person">
 </form>
 
