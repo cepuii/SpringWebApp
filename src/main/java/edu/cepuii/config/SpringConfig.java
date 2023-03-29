@@ -26,7 +26,8 @@ import java.util.Objects;
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext context;
- private final Environment environment;
+    private final Environment environment;
+
     @Autowired
     public SpringConfig(ApplicationContext context, Environment environment) {
         this.context = context;
@@ -58,7 +59,7 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("driver")));
         dataSource.setUrl(environment.getProperty("url"));
@@ -68,7 +69,7 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(){
+    public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
 

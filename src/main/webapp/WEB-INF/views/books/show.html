@@ -19,20 +19,20 @@
 </form>
 <br>
 <hr>
-<div th:if="${book.personId} == null">
+<div th:if="${owner} == null">
     <p>This book is free. Who is takes it?</p>
     <form th:method="PATCH" th:action="@{/books/{id}/addPerson(id=${book.getBookId()})}">
         <label for="select">Choose a person</label>
-        <select id="select" th:object="${book}" th:field="*{personId}">
-            <option th:each="person : ${people}" th:value="${person.personId}"
-                    th:text="${person.getFullName()}"></option>
+        <select id="select" th:object="${person}" th:field="*{personId}">
+            <option th:each="per : ${people}" th:value="${per.personId}"
+                    th:text="${per.getFullName()}"></option>
         </select>
         <input type="submit" value="Set owner">
     </form>
 </div>
 
-<div th:unless="${book.personId} == null">
-    <p th:text="'The book is now with: ' + ${person.fullName}"></p>
+<div th:unless="${owner} == null">
+    <p th:text="'The book is now with: ' + ${owner.fullName}"></p>
     <form th:method="PATCH" th:action="@{/books/{id}/cleanPerson(id=${book.bookId})}">
         <input type="submit" value="Return the book">
     </form>

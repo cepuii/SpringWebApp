@@ -1,6 +1,7 @@
 package edu.cepuii.dao;
 
 import edu.cepuii.models.Book;
+import edu.cepuii.models.Person;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -36,8 +37,8 @@ public class BookDao {
     }
 
     public void update(Book book, int bookId) {
-        jdbcTemplate.update("UPDATE book SET title=?, author=?, year_of_public=?, person_id=? WHERE book_id=?",
-                book.getTitle(), book.getAuthor(), book.getYearOfPublic(), book.getPersonId(), bookId);
+        jdbcTemplate.update("UPDATE book SET title=?, author=?, year_of_public=? WHERE book_id=?",
+                book.getTitle(), book.getAuthor(), book.getYearOfPublic(), bookId);
     }
 
     public void delete(int id) {
@@ -50,5 +51,10 @@ public class BookDao {
 
     public void updatePersonId(int bookId, Integer personId) {
         jdbcTemplate.update("UPDATE book SET person_id=? WHERE book_id=?", personId, bookId);
+    }
+
+    public Optional<Person> getBookOwner(int id) {
+        return jdbcTemplate.query("SELECT person.* FROM book JOIN person ON book.person_id = person.person_id WHERE book_id=?",
+                new BeanPropertyRowMapper<>(Person.class), id).stream().findAny();
     }
 }

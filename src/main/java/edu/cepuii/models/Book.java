@@ -5,71 +5,57 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public class Book {
-    private int bookId;
-    @Size(min = 2, max = 100, message = "Title should be between 2 and 100 characters")
-    private String title;
-    @NotEmpty(message = "Author should not be empty")
-    @Size(min = 2, max = 100, message = "Author should be between 2 and 100 characters")
-    private String author;
-    @Min(value = 1800, message = "Year of publication should be greater than 1800")
-    private int yearOfPublic;
 
-    private Integer personId;
-    public Book() {
-    }
+  private int bookId;
+  @Size(min = 2, max = 100, message = "Title should be between 2 and 100 characters")
+  private String title;
+  @NotEmpty(message = "Author should not be empty")
+  @Size(min = 2, max = 100, message = "Author should be between 2 and 100 characters")
+  private String author;
+  @Min(value = 1800, message = "Year of publication should be greater than 1800")
+  private int yearOfPublic;
 
-    public Book(int bookId, String title, String author, int yearOfPublic) {
-        this.bookId = bookId;
-        this.title = title;
-        this.author = author;
-        this.yearOfPublic = yearOfPublic;
-    }
+  public Book() {
+  }
 
-    public Book(int bookId, String title, String author, int yearOfPublic, Integer personId) {
-        this.bookId = bookId;
-        this.title = title;
-        this.author = author;
-        this.yearOfPublic = yearOfPublic;
-        this.personId = personId;
-    }
+  public Book(int bookId, String title, String author, int yearOfPublic) {
+    this.bookId = bookId;
+    this.title = title;
+    this.author = author;
+    this.yearOfPublic = yearOfPublic;
+  }
 
-    public int getBookId() {
-        return bookId;
-    }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
-    }
+  public int getBookId() {
+    return bookId;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public void setBookId(int bookId) {
+    this.bookId = bookId;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public String getAuthor() {
-        return author;
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+  public String getAuthor() {
+    return author;
+  }
 
-    public int getYearOfPublic() {
-        return yearOfPublic;
-    }
+  public void setAuthor(String author) {
+    this.author = author;
+  }
 
-    public void setYearOfPublic(int yearOfPublic) {
-        this.yearOfPublic = yearOfPublic;
-    }
+  public int getYearOfPublic() {
+    return yearOfPublic;
+  }
 
-    public Integer getPersonId() {
-        return personId;
-    }
+  public void setYearOfPublic(int yearOfPublic) {
+    this.yearOfPublic = yearOfPublic;
+  }
 
-    public void setPersonId(Integer personId) {
-        this.personId = personId;
-    }
 }
