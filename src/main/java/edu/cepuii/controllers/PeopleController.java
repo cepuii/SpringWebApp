@@ -44,8 +44,7 @@ public class PeopleController {
             return "redirect:/people";
         }
 
-        List<Book> books = bookDao.getAllByPersonId(person.get().getPersonId());
-        model.addAttribute("books", books);
+//        List<Book> books = bookDao.getAllByPersonId(person.get().getPersonId());
 
         model.addAttribute("person", person.get());
         return "people/show";

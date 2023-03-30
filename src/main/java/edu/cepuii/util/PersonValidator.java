@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.util.Optional;
-
 @Component
 public class PersonValidator implements Validator {
 
@@ -26,8 +24,8 @@ public class PersonValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
 
-        if (personDao.getByFullName(person.getFullName()).isPresent()){
-            errors.rejectValue("fullName","","Already exist");
+        if (personDao.getByFullName(person.getFullName()).isPresent()) {
+            errors.rejectValue("fullName", "", "Already exist");
         }
     }
 }

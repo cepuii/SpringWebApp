@@ -1,52 +1,23 @@
 package edu.cepuii.dao;
 
 import edu.cepuii.models.Person;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
-public class PersonDao {
+public interface PersonDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    List<Person> getAll();
 
-    @Autowired
-    public PersonDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    Optional<Person> getById(int id);
 
-    public List<Person> getAll() {
-        return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
-    }
-
-    public Optional<Person> getById(int id) {
-        return jdbcTemplate.query("SELECT * FROM person WHERE person_id=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{id})
-                .stream().findAny();
-    }
-    public Optional<Person> getByFullName(String fullName) {
-        return jdbcTemplate.query("SELECT * FROM person WHERE full_name=?", new BeanPropertyRowMapper<>(Person.class), new Object[]{fullName})
-                .stream().findAny();
-    }
+    Optional<Person> getByFullName(String fullName);
 
 
-    public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO person (full_name, year_of_birth) VALUES (?,?)",
-                person.getFullName(), person.getYearOfBirth());
-    }
+    void save(Person person);
 
-    public void update(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET full_name=?, year_of_birth=? WHERE person_id=?",
-                person.getFullName(), person.getYearOfBirth(), id);
-    }
+    void update(int id, Person person);
 
-    public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM person WHERE person_id=?", id);
-    }
-
+    void delete(int id);
 
 }
-

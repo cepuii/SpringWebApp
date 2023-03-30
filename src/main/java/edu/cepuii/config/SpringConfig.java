@@ -27,7 +27,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan("edu.cepuii")
 @EnableWebMvc
-@PropertySource({"classpath:database.properties", "classpath:database.properties"})
+@PropertySource({"classpath:database.properties", "classpath:hibernate.properties"})
 @EnableTransactionManagement
 public class SpringConfig implements WebMvcConfigurer {
 

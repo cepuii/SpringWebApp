@@ -11,13 +11,13 @@
 <p th:text="${person.getYearOfBirth()}">Value</p>
 
 <br>
-<div th:if="${books?.isEmpty()}">
+<div th:if="${person.books.isEmpty()}">
     <p>User didn`t take any books yet</p>
 </div>
 
-<div th:if="${ books!=null && !#lists.isEmpty(books)}">
+<div th:unless="${#lists.isEmpty(person.books)}">
     <h3>Books:</h3>
-    <div th:each="book : ${books}">
+    <div th:each="book : ${person.books}">
         <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfPublic()}"></p>
     </div>
 </div>
