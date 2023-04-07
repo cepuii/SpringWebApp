@@ -21,6 +21,14 @@
     </label>
     <div style="color: red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Error</div>
     <br>
+    <label for="dateOfBirth">Year Of Publication:</label>
+    <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}">
+    <div style="color: red" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">author error</div>
+
+    <select id="select" th:object="${person}" th:field="*{mood}">
+        <option th:each="mood : ${moodValues}" th:value="${mood.name()}"
+                th:text="${mood.name()}"></option>
+    </select>
 
     <input type="submit" value="Add person">
 </form>

@@ -1,9 +1,8 @@
 package edu.cepuii.controllers;
 
-import edu.cepuii.dao.BookDao;
-import edu.cepuii.dao.PersonDao;
-import edu.cepuii.models.Book;
+import edu.cepuii.models.Mood;
 import edu.cepuii.models.Person;
+import edu.cepuii.sevices.PeopleService;
 import edu.cepuii.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -12,25 +11,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
 
-    private final PersonDao personDao;
-    private final BookDao bookDao;
+    private final PeopleService peopleService;
     private final PersonValidator personValidator;
 
-    public PeopleController(PersonDao personDao, BookDao bookDao, PersonValidator personValidator) {
-        this.personDao = personDao;
-        this.bookDao = bookDao;
+    public PeopleController(PeopleService peopleService, PersonValidator personValidator) {
+        this.peopleService = peopleService;
         this.personValidator = personValidator;
     }
 
     @GetMapping
     public String index(Model model) {
-        List<Person> people = personDao.getAll();
+        List<Person> people = peopleService.getAll();
         model.addAttribute("people", people);
         return "people/index";
     }
@@ -38,20 +34,20 @@ public class PeopleController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
 
-        Optional<Person> person = personDao.getById(id);
+        Person person = peopleService.getById(id);
 
-        if (person.isEmpty()) {
+        if (person == null) {
             return "redirect:/people";
         }
 
-//        List<Book> books = bookDao.getAllByPersonId(person.get().getPersonId());
-
-        model.addAttribute("person", person.get());
+        model.addAttribute("person", person);
         return "people/show";
     }
 
     @GetMapping("/new")
-    public String newPerson(@ModelAttribute Person person) {
+    public String newPerson(@ModelAttribute Person person, Model model) {
+        model.addAttribute("moodValues", Mood.values());
+
         return "people/create";
     }
 
@@ -64,18 +60,18 @@ public class PeopleController {
             return "people/create";
         }
 
-        personDao.save(person);
+        peopleService.create(person);
 
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        Optional<Person> person = personDao.getById(id);
-        if (person.isEmpty()) {
+        Person person = peopleService.getById(id);
+        if (person == null) {
             return "redirect:/people";
         }
-        model.addAttribute("person", person.get());
+        model.addAttribute("person", person);
         return "people/edit";
     }
 
@@ -88,13 +84,13 @@ public class PeopleController {
             return "people/edit";
         }
 
-        personDao.update(id, person);
+        peopleService.update(id, person);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        personDao.delete(id);
+        peopleService.delete(id);
         return "redirect:/people";
     }
 

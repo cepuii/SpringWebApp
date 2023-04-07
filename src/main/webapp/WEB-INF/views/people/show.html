@@ -9,6 +9,8 @@
 <p th:text="${person.getPersonId()}">Value</p>
 <p th:text="${person.getFullName()}">Value</p>
 <p th:text="${person.getYearOfBirth()}">Value</p>
+<p th:text="${person.getDateOfBirth()}">Value</p>
+<p th:text="${person.getCreatedAt()}">Value</p>
 
 <br>
 <div th:if="${person.books.isEmpty()}">
@@ -18,7 +20,7 @@
 <div th:unless="${#lists.isEmpty(person.books)}">
     <h3>Books:</h3>
     <div th:each="book : ${person.books}">
-        <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfPublic()}"></p>
+        <p th:style="${book.delay}? 'color:black' : 'color:red'" th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfPublic()}"></p>
     </div>
 </div>
 <br>

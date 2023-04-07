@@ -16,7 +16,7 @@
     <input type="text" id="author" th:field="*{author}">
     <div style="color: red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">author error</div>
     <label for="yearOfPublic">Year Of Publication:</label>
-    <input type="text" id="yearOfPublic" th:field="*{yearOfPublic}">
+    <input type="number" id="yearOfPublic" th:field="*{yearOfPublic}">
     <div style="color: red" th:if="${#fields.hasErrors('yearOfPublic')}" th:errors="*{yearOfPublic}">author error</div>
 
     <input type="submit" value="Add book">

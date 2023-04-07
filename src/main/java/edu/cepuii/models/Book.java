@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.time.Duration;
+import java.util.Date;
+
 @Entity
 @Table(name = "book")
 public class Book {
@@ -24,6 +27,11 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person owner;
+    @Column(name = "in_owe")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date inOwe;
+    @Transient
+    private boolean delay;
 
     public Book() {
     }
@@ -74,5 +82,21 @@ public class Book {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public Date getInOwe() {
+        return inOwe;
+    }
+
+    public void setInOwe(Date inOwe) {
+        this.inOwe = inOwe;
+    }
+
+    public boolean isDelay() {
+        return Duration.between(inOwe.toInstant(), new Date().toInstant()).toDays() <= 10;
+    }
+
+    public void setDelay(boolean delay) {
+        this.delay = delay;
     }
 }
